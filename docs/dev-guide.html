@@ -256,7 +256,7 @@ footer.doc-foot { border-top: 1px solid var(--line); padding: 22px 20px 40px; te
         <tr><td>R4</td><td>다 맞추면 축하 애니메이션</td><td>그림 속 별·달 순차 반짝임 + 빛줄기 + 별 꽃가루 + 불꽃 + 팡파르 + 결과 창(별점)</td><td><span class="pill ok">자동</span> 완성 창 표시 · <span class="pill blue">눈 확인</span> 스크린숏</td></tr>
         <tr><td>R5</td><td>게임성 강화 UI/UX·규칙·보조 기능</td><td>회전 모드, 덩어리 결합, 밑그림, 원본 창, 정리, 확대/이동, 별점, 기록, 스티커 7종, 자동 저장·이어 하기, 단축키, 효과음</td><td><span class="pill ok">자동</span> 기능별 점검 48항목</td></tr>
         <tr><td>R6</td><td>Windows·Linux·macOS·Android·iOS·iPadOS 동일 접근 — 범용 기술</td><td>표준 웹(HTML5 Canvas 2D, Pointer Events, Web Audio, localStorage, Service Worker), 빌드·플러그인 없음</td><td><span class="pill ok">자동</span> Chromium(데스크톱·모바일 에뮬) · WebKit(iPadOS 27 시뮬레이터) <br><span class="pill warn">미확인</span> Firefox · 실기기</td></tr>
-        <tr><td>R7</td><td>서버가 필요하면 무료 플랫폼으로 서빙</td><td>서버 로직 없음 → 정적 호스팅(GitHub Pages / Cloudflare Pages / Netlify 무료) 또는 파일 직접 실행</td><td><span class="pill ok">자동</span> 로컬 정적 서버·file:// 구조 <span class="pill warn">미확인</span> 실제 배포</td></tr>
+        <tr><td>R7</td><td>서버가 필요하면 무료 플랫폼으로 서빙</td><td>서버 로직 없음 → 정적 호스팅(GitHub Pages / Cloudflare Pages / Netlify 무료) 또는 파일 직접 실행</td><td><span class="pill ok">자동</span> GitHub Pages 배포본에서 Chrome·Safari 자체 점검, 오프라인 새로고침</td></tr>
         <tr><td>R8</td><td>사용자 가이드 HTML (시각적, 다운로드 가능)</td><td><code>game/docs/user-guide.html</code> — 이미지 내장 단일 파일, ⬇ 내려받기·인쇄</td><td><span class="pill blue">눈 확인</span></td></tr>
         <tr><td>R9</td><td>개발 문서 HTML (기획~알고리즘 단일 문서)</td><td>이 문서 <code>game/docs/dev-guide.html</code></td><td><span class="pill blue">눈 확인</span></td></tr>
         <tr><td>R10</td><td>임무 #2: 다른 장르 게임 2종 이상 기획 (구현 X)</td><td><code>game/docs/game-concepts.html</code> — 3종 (추리 어드벤처 · 횡스크롤 아케이드 · 1인칭 빛 슈팅)</td><td><span class="pill blue">눈 확인</span></td></tr>
@@ -606,7 +606,7 @@ tol = max(0.2·S, 16px / 확대배율)</code></pre>
         <tr><td>연속 조작</td><td><span class="pill ok">확인</span> 125조각 연속 끌기, 찬스 연타(비행 중 무시), 핀치 전환</td></tr>
         <tr><td>문구 직관성</td><td><span class="pill blue">검토</span> 아이 눈높이 존댓말·짧은 문장, 아이콘+글자 병기</td></tr>
         <tr><td>실기기</td><td><span class="pill warn">미확인</span> 실제 iPad Pro 11·갤럭시 S23 Ultra 손가락 조작감·소리·진동 (에뮬레이션·시뮬레이터로만 확인)</td></tr>
-        <tr><td>오프라인(SW)</td><td><span class="pill ok">확인</span> 헤드리스 Chrome: 서비스 워커 캐시 16항목 → 네트워크 끊고 새로고침 → 처음 화면·게임 시작 (<code>node tools/offline-check.mjs</code>) / <span class="pill warn">미확인</span> 실제 HTTPS 배포·홈 화면 앱</td></tr>
+        <tr><td>오프라인(SW)</td><td><span class="pill ok">확인</span> 헤드리스 Chrome: 서비스 워커 캐시 16항목 → 네트워크 끊고 새로고침 → 처음 화면·게임 시작 (<code>node tools/offline-check.mjs</code>) / <span class="pill ok">확인</span> 실제 HTTPS 배포본(GitHub Pages)에서도 같은 점검 통과 / <span class="pill warn">미확인</span> 홈 화면 앱(설치형) 실행</td></tr>
         <tr><td>파일 실행(file://)</td><td><span class="pill ok">확인</span> <code>game/index.html</code> 직접 열기 → 자체 점검 통과 (캔버스 오염 없음)</td></tr>
       </table></div>
       <h3>8.4 화면 모음</h3>
@@ -621,6 +621,7 @@ tol = max(0.2·S, 16px / 확대배율)</code></pre>
     <!-- ───────────── 9 ───────────── -->
     <section class="sec" id="s9">
       <h2><span class="no">9</span>배포 (무료 호스팅)</h2>
+      <div class="callout ok"><b>운영 주소</b>: <a href="https://beerpit.github.io/starry-night-by-junyeong-astra/">https://beerpit.github.io/starry-night-by-junyeong-astra/</a> — GitHub Pages(공개 저장소 <code>beerpit/starry-night-by-junyeong-astra</code>), <code>bash tools/deploy-pages.sh</code> 로 배포. 배포본에서 Chrome 자체 점검·오프라인 새로고침(<code>node tools/live-check.mjs</code>)과 iPadOS Safari 자체 점검 통과.</div>
       <p>서버 코드가 없으므로 <code>game/</code> 폴더를 그대로 아무 정적 호스팅에 올리면 된다. 모두 HTTPS 를 기본 제공해 Service Worker(오프라인)·홈 화면 설치가 동작한다.</p>
       <div class="grid">
         <div class="card"><h4>GitHub Pages</h4><ol class="small"><li>저장소에 <code>game/</code> 포함해 push</li><li>Settings → Pages → Source: GitHub Actions</li><li>저장소의 <code>.github/workflows/pages.yml</code> 예시(README 참고)로 <code>game/</code> 업로드</li><li><code>https://계정.github.io/저장소/</code></li></ol></div>
