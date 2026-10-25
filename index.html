@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0a1538">
+  <meta name="description" content="어린 화가가 팔레트에 그린 '별이 빛나는 밤'으로 만든 직소 퍼즐 게임 — 데스크톱·태블릿·휴대폰 어디서나">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="별밤 by Junyeong">
+  <title>별이 빛나는 밤 by Junyeong</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/favicon-32.png" sizes="32x32">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="sky" aria-hidden="true"></div>
+
+  <!-- ───────── 처음 화면 ───────── -->
+  <main id="home" class="screen">
+    <header class="home-head">
+      <h1><span class="t1">별이 빛나는 밤</span> <span class="t2">by Junyeong</span></h1>
+      <p class="sub">준영이가 팔레트에 그린 그림으로 만든 퍼즐 — 조각조각 다시 맞춰 볼까요?</p>
+    </header>
+
+    <section class="hero" aria-label="그림">
+      <div class="hero-art-wrap">
+        <img id="hero-art" class="hero-art" alt="팔레트 모양 나무판에 유화로 그린 '별이 빛나는 밤'">
+      </div>
+      <label class="artist">
+        <span>🎨 그린 사람</span>
+        <input id="artist" type="text" maxlength="14" placeholder="이름 (선택)" autocomplete="off" spellcheck="false">
+      </label>
+    </section>
+
+    <section id="resume-box" class="resume" hidden>
+      <button id="btn-resume" class="btn btn-resume" type="button">
+        <span class="big">▶ 이어 하기</span>
+        <span id="resume-info" class="small"></span>
+      </button>
+    </section>
+
+    <section class="panel levels-panel">
+      <h2>난이도 고르기</h2>
+      <div id="levels" class="levels" role="radiogroup" aria-label="난이도"></div>
+
+      <div class="options">
+        <label class="switch"><input id="opt-rotate" type="checkbox"><span class="knob" aria-hidden="true"></span>
+          <span class="lbl"><b>🔄 회전 모드</b><small>조각이 돌아가 있어요 — 톡 눌러 돌리기</small></span></label>
+        <label class="switch"><input id="opt-ghost" type="checkbox" checked><span class="knob" aria-hidden="true"></span>
+          <span class="lbl"><b>🖼 밑그림</b><small>판 위에 흐린 그림으로 길잡이</small></span></label>
+        <label class="switch"><input id="opt-sound" type="checkbox" checked><span class="knob" aria-hidden="true"></span>
+          <span class="lbl"><b>🔊 소리</b><small>맞출 때 딸깍·반짝 효과음</small></span></label>
+      </div>
+
+      <button id="btn-start" class="btn btn-start" type="button">퍼즐 시작!</button>
+    </section>
+
+    <section class="panel badges-panel">
+      <h2>내 스티커 <small id="badge-count"></small></h2>
+      <div id="badges" class="badges"></div>
+    </section>
+
+    <footer class="home-foot">
+      <div class="docs">
+        <span class="docs-title">📚 문서</span>
+        <a href="docs/user-guide.html" target="_blank" rel="noopener">사용자 가이드</a><a class="dl" href="docs/user-guide.html" download title="사용자 가이드 내려받기" aria-label="사용자 가이드 내려받기">⬇</a>
+        <a href="docs/dev-guide.html" target="_blank" rel="noopener">개발 문서</a><a class="dl" href="docs/dev-guide.html" download title="개발 문서 내려받기" aria-label="개발 문서 내려받기">⬇</a>
+        <a href="docs/game-concepts.html" target="_blank" rel="noopener">다른 게임 기획안</a><a class="dl" href="docs/game-concepts.html" download title="게임 기획안 내려받기" aria-label="게임 기획안 내려받기">⬇</a>
+      </div>
+      <button id="btn-help-home" class="link-btn" type="button">❓ 도움말</button>
+    </footer>
+  </main>
+
+  <!-- ───────── 게임 화면 ───────── -->
+  <section id="play" class="screen" hidden>
+    <header class="toolbar" role="toolbar" aria-label="게임 도구">
+      <button class="tb" id="tb-home" type="button" title="처음 화면 (자동 저장됨)" aria-label="처음 화면"><i>🏠</i><span>처음</span></button>
+      <div class="status" aria-live="polite">
+        <span id="st-level" class="st-level"></span>
+        <span id="st-count" class="st-count">0/0</span>
+        <span id="st-time" class="st-time">0:00</span>
+      </div>
+      <div class="tb-spacer"></div>
+      <button class="tb" id="tb-preview" type="button" title="원본 그림 보기 (P)" aria-label="원본 그림 보기" aria-pressed="false"><i>👁</i><span>원본</span></button>
+      <button class="tb" id="tb-ghost" type="button" title="밑그림 켜기/끄기 (G)" aria-label="밑그림" aria-pressed="true"><i>🖼</i><span>밑그림</span></button>
+      <button class="tb" id="tb-tidy" type="button" title="조각 정리 — 테두리 조각 먼저 (T)" aria-label="조각 정리"><i>🧹</i><span>정리</span></button>
+      <button class="tb" id="tb-fit" type="button" title="한눈에 보기 (F) · 확대/축소: 두 손가락·휠" aria-label="한눈에 보기"><i>🔍</i><span>맞춤</span></button>
+      <button class="tb" id="tb-rotate" type="button" title="고른 조각 돌리기 (R · 오른쪽 클릭)" aria-label="조각 돌리기" hidden><i>🔄</i><span>돌리기</span></button>
+      <button class="tb tb-chance" id="tb-chance" type="button" title="찬스! 조각 하나를 제자리로 (H)" aria-label="찬스"><i>🪄</i><span>찬스</span><b id="chance-n" class="badge-n">0</b></button>
+      <button class="tb wide-only" id="tb-sound" type="button" title="소리 켜기/끄기 (M)" aria-label="소리" aria-pressed="true"><i>🔊</i><span>소리</span></button>
+      <button class="tb wide-only" id="tb-help" type="button" title="도움말 (?)" aria-label="도움말"><i>❓</i><span>도움말</span></button>
+      <button class="tb wide-only" id="tb-full" type="button" title="전체 화면" aria-label="전체 화면"><i>⛶</i><span>전체</span></button>
+      <button class="tb narrow-only" id="tb-more" type="button" title="더 보기: 소리·도움말·전체 화면" aria-label="더 보기" aria-haspopup="menu" aria-expanded="false"><i>⋯</i></button>
+      <div class="progress" aria-hidden="true"><div id="progress-bar"></div></div>
+    </header>
+    <div class="stage" id="stage">
+      <canvas id="board" aria-label="퍼즐 판"></canvas>
+      <canvas id="fx" aria-hidden="true"></canvas>
+    </div>
+  </section>
+
+  <div id="more-menu" class="menu" role="menu" hidden>
+    <button type="button" role="menuitem" data-act="sound"><i id="mm-sound-i">🔊</i><span id="mm-sound-t">소리 끄기</span></button>
+    <button type="button" role="menuitem" data-act="help"><i>❓</i><span>도움말</span></button>
+    <button type="button" role="menuitem" data-act="full" id="mm-full"><i>⛶</i><span>전체 화면</span></button>
+  </div>
+  <div id="windows"></div>
+  <div id="modal-root"></div>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <div id="loading" hidden><div class="spinner" aria-hidden="true"></div><p>조각을 자르는 중…</p></div>
+  <noscript><p class="noscript">이 게임은 자바스크립트가 필요해요.</p></noscript>
+
+  <script src="assets/painting-data.js"></script>
+  <script src="js/util.js"></script>
+  <script src="js/pieces.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/fx.js"></script>
+  <script src="js/engine.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
